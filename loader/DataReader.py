@@ -13,8 +13,8 @@ import random
 import itertools
 import numpy as np
 
-from FeatParser import *
-from DataLexicaliser import *
+from .FeatParser import *
+from .DataLexicaliser import *
 from utils.nlp import *
 
 
@@ -113,8 +113,9 @@ class DataReader(object):
                         if len(xvec[j])>max_leng[j]:
                             max_leng[j] = len(xvec[j])
                 else: # TODO:DT training, 1 da/multiple sents per example
-                    print a,sv
-                    print sent
+                    print(a)
+                    print(sv)
+                    print(sent)
                     raw_input()
         # padding to have the same sent length
         lengs = [[],[],[],[],[]]
@@ -159,7 +160,7 @@ class DataReader(object):
     def _setCardinality(self):
 
         self.cardinality = []
-        fin = file('resource/feat_template.txt')
+        fin = open('resource/feat_template.txt','r')
         self.dfs = [0,0,0,0,0]
         for line in fin.readlines():
             self.cardinality.append(line.replace('\n',''))
@@ -175,14 +176,14 @@ class DataReader(object):
             self.dfs[i+1] = self.dfs[i] + self.dfs[i+1]
 
     def _printStats(self):
-        print '==============='
-        print 'Data statistics'
-        print '==============='
-        print 'Train: %d' % len(self.data['train'] )
-        print 'Valid: %d' % len(self.data['valid'] )
-        print 'Test : %d' % len(self.data['test']  )
-        print 'Feat : %d' % len(self.cardinality)
-        print '==============='
+        print('===============')
+        print('Data statistics')
+        print('===============')
+        print('Train: %d' % len(self.data['train'] ))
+        print('Valid: %d' % len(self.data['valid'] ))
+        print('Test : %d' % len(self.data['test']  ))
+        print('Feat : %d' % len(self.cardinality))
+        print('===============')
 
     def _testDelexicalisation(self):
         for data in self.data['train']+self.data['valid']+self.data['test']:
@@ -204,7 +205,7 @@ class DataReader(object):
 
     def _loadData(self,filename,group=True,multiref=False):
         
-        fin = file(filename)
+        fin = open(filename,'r')
         # remove comment lines
         for i in range(5):
             fin.readline()
@@ -227,7 +228,7 @@ class DataReader(object):
             # grouping data points according to unique DAs
             a2ref = {}
             for feat,dact,sent,base in container:
-                if a2ref.has_key(tuple(feat)):
+                if tuple(feat) in a2ref:
                     a2ref[ tuple(feat)][0].append(dact)
                     a2ref[ tuple(feat)][1].append(sent)
                     a2ref[ tuple(feat)][2].append(base)
@@ -253,14 +254,14 @@ class DataReader(object):
     
     def _loadVocab(self,vocabfile):
         
-        fin = file(vocabfile)
+        fin = open(vocabfile,'r')
         self.vocab = []#['<unk>','</s>']
         for wrd in fin.readlines():
             wrd = wrd.replace('\n','')
             self.vocab.append(wrd)
 
     def _loadTokenMap(self,mapfile='resource/detect.pair'):
-        fin  = file(mapfile)
+        fin  = open(mapfile,'r')
         self.tokenMap = json.load(fin)['general'].items()
         fin.close()
         # make it 1-to-1 relation
@@ -273,7 +274,7 @@ class DataReader(object):
     def tokenMap2Indexes(self):
         maxleng = 0
         idxmap = [[] for x in range(len(self.vocab))]
-        for k,v in self.feat2token.iteritems():
+        for k,v in self.feat2token.items():
             try:
                 idxmap[self.vocab.index(v)].append(self.cardinality.index(k)-self.dfs[1])
                 if len(idxmap[self.vocab.index(v)])>maxleng:
@@ -285,7 +286,7 @@ class DataReader(object):
         return idxmap
 
     def readVecFile(self,filename,vocab):
-        fin = file(filename)
+        fin = open(filename,'r')
         # discard comment lines
         for i in range(5):
             fin.readline()

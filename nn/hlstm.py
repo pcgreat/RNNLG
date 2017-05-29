@@ -6,12 +6,12 @@
 import operator
 import numpy as np
 import theano.tensor as T
-from Queue import PriorityQueue
+from queue import PriorityQueue
 from utils.mathUtil import softmax, sigmoid, tanh
 from theano.ifelse import ifelse
 from copy import deepcopy
 
-from basic  import *
+from .basic  import *
 
 class hlstm(BaseRLG):
 

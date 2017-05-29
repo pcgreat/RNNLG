@@ -15,10 +15,10 @@ import json
 class DataLexicaliser(object):
 
     def __init__(self):
-        fin = file('resource/special_values.txt')
-        self.special_values= json.load(fin).keys() + ['?']
+        fin = open('resource/special_values.txt','r')
+        self.special_values= list(json.load(fin).keys()) + ['?']
         fin.close()
-        fin = file('resource/special_slots.txt')
+        fin = open('resource/special_slots.txt','r')
         self.special_slots = json.load(fin)
         fin.close()
         

@@ -25,7 +25,7 @@ class ERRScorer():
     def __init__(self,detectfile):
 
         self.detectPairs = []
-        fin = file(detectfile)
+        fin = open(detectfile,'r')
         self.detectPairs = json.load(fin)
         fin.close()
 
@@ -48,7 +48,7 @@ class ERRScorer():
         # exact match for categorical slots
         caty_slot_error = 0
         # fo each slot - token pair in the detect pair dict
-        for s,tok in self.detectPairs['general'].iteritems(): 
+        for s,tok in self.detectPairs['general'].items(): 
             # token compare to
             comparetos = ['sv.'+s+'._1','sv.'+s+'._2','sv.'+s+'._3']
             # count feature count in da feature
@@ -68,7 +68,7 @@ class ERRScorer():
         # key word match for binary slots, only an approximation
         bnay_slot_error = 0
         # for each binary slot
-        for s,toks in self.detectPairs['binary'].iteritems():
+        for s,toks in self.detectPairs['binary'].items():
             # tokens compare to
             comparetos = ['sv.'+s+'.yes','sv.'+s+'.no',
                     'sv.'+s+'.dontcare','sv.'+s+'.none']
