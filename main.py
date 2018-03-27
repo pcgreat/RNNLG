@@ -3,40 +3,37 @@
 #  Copyright Tsung-Hsien Wen, Cambridge Dialogue Systems Group, 2016 #
 ######################################################################
 ######################################################################
-import sys
-import os
-import numpy as np
-
-from utils.commandparser    import RNNLGOptParser
-from generator.net          import Model
-from generator.ngram        import Ngram
-from generator.knn          import KNN
 
 import warnings
+
+from generator.knn import KNN
+from generator.net import Model
+from generator.ngram import Ngram
+from utils.commandparser import RNNLGOptParser
+
 warnings.simplefilter("ignore", DeprecationWarning)
 
 if __name__ == '__main__':
-    
+
     args = RNNLGOptParser()
     config = args.config
-    
-    if args.mode=='knn':
+
+    if args.mode == 'knn':
         # knn
-        knn = KNN(config,args)
+        knn = KNN(config, args)
         knn.testKNN()
-    elif args.mode=='ngram':
+    elif args.mode == 'ngram':
         # ngram case
-        ngram = Ngram(config,args)
+        ngram = Ngram(config, args)
         ngram.testNgram()
-    else: 
+    else:
         # NN case        
-        model = Model(config,args)
-        if args.mode=='train' or args.mode=='adapt':
+        model = Model(config, args)
+        if args.mode == 'train' or args.mode == 'adapt':
             model.trainNet()
-        elif args.mode=='test':
+        elif args.mode == 'test':
             model.testNet()
-        
-        
+
 # not supported yet
 """
 elif args.mode=='realtime':

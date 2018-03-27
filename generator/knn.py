@@ -55,7 +55,7 @@ class KNN(object):
                     self.reader.readall(mode='valid')
         for a,sv,s,v,sents,dact,base in templates:
             key = (tuple(a),tuple(sv))
-            if da2sents.has_key(key):
+            if key in da2sents:
                 da2sents[key].extend(sents)
                 da2sents[key] = list(set(da2sents[key]))
             else:
@@ -81,7 +81,7 @@ class KNN(object):
             sents,dact,bases = sents[0],dact[0],bases[0]
             # score DA similarity between testing example and train+valid set
             template_ranks = []
-            for da_t,sents_t in da2sents.iteritems():
+            for da_t,sents_t in da2sents.items():
                 a_t,sv_t = [set(x) for x in da_t]
                 score =float(len(a_t.intersection(set(a)))+\
                         len(sv_t.intersection(set(sv))))/\

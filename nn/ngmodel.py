@@ -58,12 +58,12 @@ class NGModel(object):
 
         # normalise everything into log prob
         sum1 = sum([cnt for cnt in self.model[1].values()])
-        for w,cnt in self.model[1].iteritems():
-            self.model[1][w] = cnt/sum1
+        for w,cnt in self.model[1].items():
+            self.model[1][w] = cnt//sum1
         self.model[1] = sorted(self.model[1].items(),
                 key=operator.itemgetter(1),reverse=True)
         for n in range(2,self.n+1):
-            for context,wdct in self.model[n].iteritems():
+            for context,wdct in self.model[n].items():
                 sumc = sum([cnt for cnt in wdct.values()])
                 for w,cnt in wdct.iteritems():
                     self.model[n][context][w] = cnt/sumc
