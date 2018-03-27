@@ -16,14 +16,14 @@ from loader.GentScorer import *
 
 from nn.ngmodel import *
 
-from ConfigParser import SafeConfigParser
+from configparser import SafeConfigParser
 
 class Ngram(object):
 
     def __init__(self,config=None,opts=None):
         # not enough info to execute
         if config==None and opts==None:
-            print "Please specify command option or config file ..."
+            print("Please specify command option or config file ...")
             return
         # config parser
         parser = SafeConfigParser()
@@ -59,7 +59,7 @@ class Ngram(object):
 
         ######## train ngram generator by grouping ########
         if self.debug:
-            print 'start ngram training ...'
+            print('start ngram training ...')
         da2sents = {}
         templates = self.reader.readall(mode='train')+\
                     self.reader.readall(mode='valid')
@@ -90,7 +90,7 @@ class Ngram(object):
 
         ######## test ngram generator on test set ######### 
         if self.debug:
-            print 'start ngram generation ...'
+            print('start ngram generation ...')
         
         # container
         parallel_corpus, hdc_corpus = [], []
@@ -140,9 +140,9 @@ class Ngram(object):
                 gens[i] = (penalty,self.reader.lexicalise(gen,dact))
             # get the top-k for evaluation
             gens = sorted(gens,key=operator.itemgetter(0))[:self.topk]
-            # print results
-            print dact
-            print 'Penalty\tTSER\tASER\tGen'
+            # print(results)
+            print(dact)
+            print('Penalty\tTSER\tASER\tGen')
             for penalty, gen in gens:
                 # score slot error rate
                 cnt, total, caty = self.gentscorer.scoreERR(a,felements,
@@ -151,8 +151,8 @@ class Ngram(object):
                 gencnts[0]  += cnt
                 gencnts[1]  += total
                 gencnts[2]  += caty
-                print '%.4f\t%d\t%d\t%s' % (penalty,total,caty,gen)
-            print '\n'
+                print('%.4f\t%d\t%d\t%s' % (penalty,total,caty,gen))
+            print('\n')
             # compute gold standard slot error rate
             for sent in sents:
                 # score slot error rate
@@ -168,16 +168,16 @@ class Ngram(object):
 
         bleuModel   = self.gentscorer.scoreBLEU(parallel_corpus)
         bleuHDC     = self.gentscorer.scoreBLEU(hdc_corpus)
-        print '##############################################'
-        print 'BLEU SCORE & SLOT ERROR on GENERATED SENTENCES'
-        print '##############################################'
-        print 'Metric       :\tBLEU\tT.ERR\tA.ERR'
-        print 'HDC          :\t%.4f\t%2.2f%%\t%2.2f%%'% (bleuHDC,0.0,0.0)
-        print 'Ref          :\t%.4f\t%2.2f%%\t%2.2f%%'% (1.0,
-                100*refcnts[1]/refcnts[0],100*refcnts[2]/refcnts[0])
-        print '----------------------------------------------'
-        print 'This Model   :\t%.4f\t%2.2f%%\t%2.2f%%'% (bleuModel,
-                100*gencnts[1]/gencnts[0],100*gencnts[2]/gencnts[0])
+        print('##############################################')
+        print('BLEU SCORE & SLOT ERROR on GENERATED SENTENCES')
+        print('##############################################')
+        print('Metric       :\tBLEU\tT.ERR\tA.ERR')
+        print('HDC          :\t%.4f\t%2.2f%%\t%2.2f%%'% (bleuHDC,0.0,0.0))
+        print('Ref          :\t%.4f\t%2.2f%%\t%2.2f%%'% (1.0,
+                100*refcnts[1]/refcnts[0],100*refcnts[2]/refcnts[0]))
+        print('----------------------------------------------')
+        print('This Model   :\t%.4f\t%2.2f%%\t%2.2f%%'% (bleuModel,
+                100*gencnts[1]/gencnts[0],100*gencnts[2]/gencnts[0]))
 
     def setupSideOperators(self):
         # initialise data reader

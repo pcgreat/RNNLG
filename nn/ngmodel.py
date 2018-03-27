@@ -5,10 +5,10 @@
 ######################################################################
 import operator
 import numpy as np
-from Queue import PriorityQueue
+from queue import PriorityQueue
 from utils.mathUtil import softmax, sigmoid, tanh
 from copy import deepcopy
-from basic import *
+from .basic import *
 
 class NGModel(object):
 

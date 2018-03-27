@@ -9,7 +9,7 @@ import sys
 import operator
 import re
 
-fin = file('utils/nlp/mapping.pair')
+fin = open('utils/nlp/mapping.pair','r')
 replacements = []
 for line in fin.readlines():
     tok_from, tok_to = line.replace('\n','').split('\t')
@@ -72,8 +72,8 @@ def normalize(text):
     text = re.sub('\'\s',' ',text)
     text = re.sub('\s\'',' ',text)
     for fromx, tox in replacements:
-		text = ' '+text+' '
-		text = text.replace(fromx,tox)[1:-1]
+        text = ' '+text+' '
+        text = text.replace(fromx,tox)[1:-1]
 
     # insert white space for 's
     text = insertSpace('\'s',text)
