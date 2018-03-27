@@ -5,7 +5,7 @@
 ######################################################################
 import re
 
-fin = open('utils/nlp/mapping.pair', 'r')
+fin = open('utils/_nlp/mapping.pair', 'r')
 replacements = []
 for line in fin.readlines():
     tok_from, tok_to = line.replace('\n', '').split('\t')

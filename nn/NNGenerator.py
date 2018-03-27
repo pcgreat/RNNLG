@@ -5,9 +5,10 @@
 ######################################################################
 from collections import OrderedDict
 
-from .encdec import *
-from .hlstm import *
-from .sclstm import *
+from nn.basic import T, clip_gradient, theano
+from nn.encdec import encdec
+from nn.hlstm import hlstm
+from nn.sclstm import sclstm
 
 
 class NNGenerator(object):

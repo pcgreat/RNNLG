@@ -3,16 +3,23 @@
 #  Copyright Tsung-Hsien Wen, Cambridge Dialogue Systems Group, 2016 #
 ######################################################################
 ######################################################################
+import operator
+import os
 import pickle as pk
+import random
+import sys
 import time
 from configparser import SafeConfigParser
+from copy import deepcopy
 from math import log10
 
-from loader.DataReader import *
-from loader.GentScorer import *
-from nn.NNGenerator import *
+import numpy as np
 
 # theano debugging flags
+from loader.DataReader import DataReader
+from loader.GentScorer import GentScorer
+from nn.NNGenerator import NNGenerator
+
 """
 theano.config.compute_test_value = 'warn'
 theano.config.exception_verbosity = 'high'
@@ -130,7 +137,7 @@ class Model(object):
         ############## Setting Recurrent Generator ################
         ###########################################################
         if self.debug:
-            print('\tsetting recurrent generator, type: %s ...' % \
+            print('\tsetting recurrent generator, type: %s ...' %
                   self.gentype)
         self.model = NNGenerator(self.gentype, self.reader.vocab,
                                  self.beamwidth, self.overgen,
@@ -142,7 +149,7 @@ class Model(object):
             self.model.setWordVec(self.reader.readVecFile(
                 self.wvecfile, self.reader.vocab))
         if self.debug:
-            print('\t\tnumber of parameters : %8d' % \
+            print('\t\tnumber of parameters : %8d' %
                   self.model.numOfParams())
             print('\tthis may take up to several minutes ...')
 
@@ -323,8 +330,8 @@ class Model(object):
             if self.debug:
                 print(
                     'Epoch %2d, Alpha %.4f, TRAIN Obj:%.4f, Expected BLEU:%.4f, Expected ERR:%.4f, Time:%.2f mins,' % (
-                    epoch, self.lr, train_obj / float(num_sent), train_bleu / float(num_sent),
-                    train_err / float(num_sent), sec), )
+                        epoch, self.lr, train_obj / float(num_sent), train_bleu / float(num_sent),
+                        train_err / float(num_sent), sec), )
                 sys.stdout.flush()
 
             # validation phase

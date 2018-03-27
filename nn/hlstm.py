@@ -8,9 +8,11 @@ from copy import deepcopy
 from queue import PriorityQueue
 
 import numpy as np
+import theano
+import theano.tensor as T
 
+from nn.basic import BaseRLG, BeamSearchNode, collectSentLogp
 from utils.mathUtil import softmax, sigmoid, tanh
-from .basic import *
 
 
 class hlstm(BaseRLG):
